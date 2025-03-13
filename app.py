@@ -85,5 +85,4 @@ import pandas as pd
 #         return jsonify({'error': str(e)})
 
 if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 8080))  # ใช้พอร์ตจาก Railway
-    app.run(host='0.0.0.0', port=port, debug=True)
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
