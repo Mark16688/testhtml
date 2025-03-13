@@ -12,10 +12,10 @@ app = Flask(__name__)
 
 
 
-model = joblib.load("Dataset/models_complete/titanic_model.pkl")  # Log แสดงว่าระบบโหลดโมเดลสำเร็จ
+#model = joblib.load("Dataset/models_complete/titanic_model.pkl")  # Log แสดงว่าระบบโหลดโมเดลสำเร็จ
 
 # โหลดโมเดล Neural Network
-nn_model = load_model("Dataset/models_complete/mnist_model.h5")
+#nn_model = load_model("Dataset/models_complete/mnist_model.h5")
 
 # ----------------- Routes สำหรับแสดงหน้าเว็บ -----------------
 @app.route('/')
@@ -42,47 +42,47 @@ import pandas as pd
 
 import pandas as pd
 
-@app.route('/predict', methods=['POST'])
-def predict():
-    try:
-        # ✅ รับค่าจากแบบฟอร์ม
-        pclass = int(request.form['Pclass'])
-        sex = int(request.form['Sex'])
-        age = float(request.form['Age'])
-        sibsp = int(request.form['SibSp'])
-        parch = int(request.form['Parch'])
-        fare = float(request.form['Fare'])
-        embarked = int(request.form['Embarked'])
+# @app.route('/predict', methods=['POST'])
+# def predict():
+#     try:
+#         # ✅ รับค่าจากแบบฟอร์ม
+#         pclass = int(request.form['Pclass'])
+#         sex = int(request.form['Sex'])
+#         age = float(request.form['Age'])
+#         sibsp = int(request.form['SibSp'])
+#         parch = int(request.form['Parch'])
+#         fare = float(request.form['Fare'])
+#         embarked = int(request.form['Embarked'])
 
-        # ✅ ใช้ชื่อคอลัมน์เดียวกับตอน Train โมเดล
-        feature_names = ["Pclass", "Sex", "Age", "SibSp", "Parch", "Fare", "Embarked"]
-        input_features = pd.DataFrame([[pclass, sex, age, sibsp, parch, fare, embarked]], columns=feature_names)
+#         # ✅ ใช้ชื่อคอลัมน์เดียวกับตอน Train โมเดล
+#         feature_names = ["Pclass", "Sex", "Age", "SibSp", "Parch", "Fare", "Embarked"]
+#         input_features = pd.DataFrame([[pclass, sex, age, sibsp, parch, fare, embarked]], columns=feature_names)
 
-        # ✅ ทำการพยากรณ์
-        prediction = model.predict(input_features)[0]
+#         # ✅ ทำการพยากรณ์
+#         prediction = model.predict(input_features)[0]
 
-        # ✅ คืนค่าผลลัพธ์ไปที่หน้าเว็บ
-        result = "✅ Survived" if prediction == 1 else "❌ Did Not Survive"
-        return render_template('ml_demo.html', prediction=result)
+#         # ✅ คืนค่าผลลัพธ์ไปที่หน้าเว็บ
+#         result = "✅ Survived" if prediction == 1 else "❌ Did Not Survive"
+#         return render_template('ml_demo.html', prediction=result)
 
-    except Exception as e:
-        return f"Error: {str(e)}"
+#     except Exception as e:
+#         return f"Error: {str(e)}"
     
-@app.route('/predict_nn', methods=['POST'])
-def predict_nn():
-    try:
-        file = request.files['file']
-        img = Image.open(io.BytesIO(file.read())).convert('L')  # แปลงเป็นขาวดำ
-        img = img.resize((28, 28))  # ปรับขนาด
-        img_array = np.array(img) / 255.0  # Normalize
-        img_array = img_array.reshape(1, 28, 28, 1)  # Reshape ให้ตรงกับโมเดล
+# @app.route('/predict_nn', methods=['POST'])
+# def predict_nn():
+#     try:
+#         file = request.files['file']
+#         img = Image.open(io.BytesIO(file.read())).convert('L')  # แปลงเป็นขาวดำ
+#         img = img.resize((28, 28))  # ปรับขนาด
+#         img_array = np.array(img) / 255.0  # Normalize
+#         img_array = img_array.reshape(1, 28, 28, 1)  # Reshape ให้ตรงกับโมเดล
 
-        prediction = nn_model.predict(img_array)
-        predicted_digit = np.argmax(prediction)
+#         prediction = nn_model.predict(img_array)
+#         predicted_digit = np.argmax(prediction)
 
-        return jsonify({'prediction': int(predicted_digit)})
-    except Exception as e:
-        return jsonify({'error': str(e)})
+#         return jsonify({'prediction': int(predicted_digit)})
+#     except Exception as e:
+#         return jsonify({'error': str(e)})
 
 if __name__ == '__main__':
     app.run(debug=True)
