@@ -8,9 +8,9 @@ from PIL import Image
 import io
 import os
 
+
+
 app = Flask(__name__)
-
-
 
 #model = joblib.load("Dataset/models_complete/titanic_model.pkl")  # Log แสดงว่าระบบโหลดโมเดลสำเร็จ
 
@@ -24,7 +24,7 @@ def home():
 
 @app.route('/ml_research')
 def ml_research():
-    return render_template('templates/ml_research.html')
+    return render_template('ml_research.html')
 
 @app.route('/ml_demo')
 def ml_demo():
