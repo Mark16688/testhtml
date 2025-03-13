@@ -24,7 +24,7 @@ def home():
 
 @app.route('/ml_research')
 def ml_research():
-    return render_template('template/ml_research.html')
+    return render_template('templates/ml_research.html')
 
 @app.route('/ml_demo')
 def ml_demo():
